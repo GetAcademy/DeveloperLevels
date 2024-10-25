@@ -11,59 +11,189 @@
             margin: 0;
             padding: 0;
         }
+
         #app {
-            max-width: 800px;
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
             margin: 50px auto;
             padding: 20px;
+        }
+
+        .content {
+            flex: 1;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 0 10px;
+            padding: 20px;
         }
+
         h1 {
-            font-size: 1.8em;
+            font-size: 2em;
             color: #0073e6;
             border-bottom: 2px solid #0073e6;
             padding-bottom: 10px;
             margin-bottom: 20px;
+            text-align: center;
         }
-        div.level {
+
+        .level {
             margin-bottom: 30px;
         }
-        div.level h2 {
-            font-size: 1.4em;
+
+        .level h2 {
+            font-size: 1.6em;
+            color: #333;
             margin-bottom: 10px;
         }
-        div.level strong {
+
+        .level strong {
+            display: block;
             margin: 10px 0 5px;
+            font-weight: bold;
         }
+
+        .level .alt-titles {
+            color: #555;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        .level ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .level ul li {
+            background: #f9f9f9;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border-left: 6px solid #0073e6;
+        }
+
         hr {
             border: 0;
             height: 1px;
             background: #e0e0e0;
             margin: 40px 0;
         }
+
+        .versus {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .versus-column {
+            flex: 1;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .versus-column h2 {
+            text-align: center;
+        }
+
+        .versus-list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .versus-list li {
+            background: #f9f9f9;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+
+        .versus-second {
+            border-left: 6px solid #0073e6;
+        }
+
+        .versus-first {
+            border-left: 6px solid #129333;
+        }
+
+        .button-container {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #0073e6;
+            color: white;
+        }
+
+        button:disabled {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        .question-container {
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
     </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app">
+    <div class="content" id="left-content">
+    </div>
+    <div class="content" id="right-content">
+    </div>
+</div>
 
 <script>
-    // ∞
+    const thisVsThat = {
+        firstTitle: 'Utvikler',
+        secondTitle: 'Programmerer',
+        firstSkills: [
+            'UX',
+            'Bredere fokus og kreativitet',
+            'Kode er bare ett av mange verktøy',
+            'Design/arkitektur/testing/rammeverk'
+        ],
+        secondSkills: [
+            'Jobber med mer spesifikke ting',
+            'Skriver (nesten) bare kode',
+            'Kode ditt primære verktøy',
+            'Ekspert på programmeringspråk'
+        ]
+    };
+
+    let currentDiscussionQuestion = -1;
     const developerLevels = [
         {
             title: 'Junior Developer',
             altTitles: ['Associate developer', 'Trainee'],
             yearsExperience: '0-2',
             notes: [
-                'Grunnleggende programmering'
-                , 'Fundementale programmeringskonsepter'
-                , 'Konkrete problemer / veldefinerte problemer'
-                , 'Code monkeys'
-                , 'Lære å være mer selvstendig'
-                , 'Lære å skrive profesjonell kode'
-                , 'Spør etter hjelp og veiledning'
-                , 'Begynne å sette seg inn i større prosjekter'
-                , 'Har lite eller ingen ansvar (for systemene)'
+                'Grunnleggende programmering',
+                'Fundamentale programmeringskonsepter',
+                'Konkrete problemer / veldefinerte problemer',
+                'Code monkeys',
+                'Lære å være mer selvstendig',
+                'Lære å skrive profesjonell kode',
+                'Spør etter hjelp og veiledning',
+                'Begynne å sette seg inn i større prosjekter',
+                'Har lite eller ingen ansvar (for systemene)'
             ]
         },
         {
@@ -71,15 +201,15 @@
             altTitles: ['Intermediate', 'Mid-level Developer'],
             yearsExperience: '1-∞',
             notes: [
-                'Kan jobbe selvstendig'
-                , 'God forståelse for programmering'
-                , 'Mer kompliserte problemer'
-                , 'Skriver profesjonell kode'
-                , 'Trenger mindre hjelp'
-                , 'Mer ansvar'
-                , 'Kan designe systemer og arkitektur'
-                , 'Kan kommunisere med andre utviklere og stakeholders'
-                , 'Skal hjelpe andre'
+                'Kan jobbe selvstendig',
+                'God forståelse for programmering',
+                'Mer kompliserte problemer',
+                'Skriver profesjonell kode',
+                'Trenger mindre hjelp',
+                'Mer ansvar',
+                'Kan designe systemer og arkitektur',
+                'Kan kommunisere med andre utviklere og stakeholders',
+                'Skal hjelpe andre'
             ]
         },
         {
@@ -87,15 +217,15 @@
             altTitles: ['Senõr Developer'],
             yearsExperience: '3+',
             notes: [
-                'Helhetsoversikt over systemene'
-                , 'Dypere foreståelse for programmering'
-                , 'Er en mentor'
-                , 'Leder prosjekter/sørge for at leveranser blir levert'
-                , 'Ansvarlig for større og mer komplekse systemer'
-                , 'Tar beslutninger om teknologi og implementasjon'
-                , 'Oftere kommunikasjon med andre utviklere og stakeholders'
-                , 'Designe arkitektur'
-                , 'Starte prosjektene'
+                'Helhetsoversikt over systemene',
+                'Dypere forståelse for programmering',
+                'Er en mentor',
+                'Leder prosjekter/sørge for at leveranser blir levert',
+                'Ansvarlig for større og mer komplekse systemer',
+                'Tar beslutninger om teknologi og implementasjon',
+                'Oftere kommunikasjon med andre utviklere og stakeholders',
+                'Designe arkitektur',
+                'Starte prosjektene'
             ]
         },
         {
@@ -103,12 +233,12 @@
             altTitles: ['Tech Lead'],
             yearsExperience: '5+',
             notes: [
-                'Bredere oversikt over teknologi og systemer'
-                , 'Mye kommunikasjon med andre utviklere og stakeholders'
-                , 'Ekspert på de brukte teknologiene'
-                , 'Mandat til å bestemme over teknologi'
-                , 'Ser det større bildet'
-                , 'Mye arkitektur og design'
+                'Bredere oversikt over teknologi og systemer',
+                'Mye kommunikasjon med andre utviklere og stakeholders',
+                'Ekspert på de brukte teknologiene',
+                'Mandat til å bestemme over teknologi',
+                'Ser det større bildet',
+                'Mye arkitektur og design'
             ]
         },
         {
@@ -116,38 +246,87 @@
             altTitles: ['Systemarkitekt'],
             yearsExperience: '7+',
             notes: [
-                'Mandat'
-                , 'Bruker mindre tid på kode, mer på møter/design'
-                , 'Jobber på mange prosjekter samtidig'
+                'Mandat',
+                'Bruker mindre tid på kode, mer på møter/design',
+                'Jobber på mange prosjekter samtidig'
             ]
         }
     ];
 
-    updateView();
+    const discussionsQuestions = [
+        'Hva tenker dere er de største forskjellene mellom en utvikler og en programmerer?',
+        'Kan dere komme på eksempler fra deres nåværende prosjekter der dere har brukt andre verktøy eller metoder enn koding for å løse et problem?',
+        'Hvordan tror dere denne forståelsen kan påvirke deres tilnærming til fremtidige prosjekter?'
+    ]
 
-    function updateView() {
-        let developerLevelsHtml = '';
+    function updateQuestion(questionId) {
+        console.log(questionId);
+        currentDiscussionQuestion = questionId;
+        updateView();
+    }
 
-        developerLevels.reverse().forEach(developerLevel => {
-            developerLevelsHtml += `
+    function generateDeveloperLevelHtml(levels) {
+        let html = '';
+        levels.forEach(level => {
+            html += `
             <div class="level">
-                <h2>${developerLevel.title}</h2>
-                <i>${developerLevel.altTitles.join(', ')}</i><br /><br />
-                <div><strong>Erfaring:</strong> ${developerLevel.yearsExperience}</div>
+                <h2>${level.title}</h2>
+                <div class="alt-titles">${level.altTitles.join(', ')}</div>
+                <div><strong>Erfaring:</strong> ${level.yearsExperience} år</div>
                 <div><strong>Notater:</strong>
                 <ul>
-                ${developerLevel.notes.map(note => {
-                    return `<li>${note}</li>`;
-                }).join('')}
+                ${level.notes.map(note => `<li>${note}</li>`).join('')}
                 </ul>
                 </div>
             </div>
             <hr />
             `;
         });
-
-        document.getElementById('app').innerHTML = developerLevelsHtml;
+        return html;
     }
+
+    function generateVersusHtml(vsData) {
+        let html = `
+        <div class="versus">
+            <div class="versus-column">
+                <h2>${vsData.firstTitle}</h2>
+                <ul class="versus-list versus-first ">
+                    ${vsData.firstSkills.map(skill => `<li>${skill}</li>`).join('')}
+                </ul>
+            </div>
+            <div class="versus-column">
+                <h2>${vsData.secondTitle}</h2>
+                <ul class="versus-list versus-second">
+                    ${vsData.secondSkills.map(skill => `<li>${skill}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+        <h1 style="margin-top: 5em">Diskusjon</h1>
+        `;
+
+        html += `
+        <div class="question-container">
+            ${currentDiscussionQuestion >= 0 ? `<div class="question"><h2>${discussionsQuestions[currentDiscussionQuestion]}</h2></div>` : ''}
+
+        </div>
+               <div class="button-container">
+                <button ${currentDiscussionQuestion <= -1 ? 'disabled' : ''} onclick="updateQuestion(currentDiscussionQuestion-1)">Prev</button>
+                <button ${currentDiscussionQuestion >= discussionsQuestions.length - 1 ? 'disabled' : ''} onclick="updateQuestion(currentDiscussionQuestion+1)">Next</button>
+            </div>
+        `;
+
+        return html;
+    }
+
+    function updateView() {
+        const developerLevelsHtml = generateDeveloperLevelHtml(developerLevels);
+        const versusHtml = generateVersusHtml(thisVsThat);
+
+        document.getElementById('left-content').innerHTML = developerLevelsHtml;
+        document.getElementById('right-content').innerHTML = versusHtml;
+    }
+
+    updateView();
 </script>
 </body>
 </html>
